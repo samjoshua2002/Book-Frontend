@@ -17,6 +17,8 @@ function Bookdetails() {
       });
   }, []);
 
+  
+
   // Handle delete button click
   const handleDeleteClick = (bookId) => {
     // Make DELETE request with the bookId

@@ -8,6 +8,7 @@ function App() {
       {/* Form Section */}
       <div className="w-full md:w-1/2 p-4 bg-white ">
         <Form />
+        
       </div>
 
       {/* Bookdetails Section */}

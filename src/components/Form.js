@@ -10,6 +10,8 @@ function Form() {
     publisher: "",
     publicationDate: "",
     price: "",
+
+    
     costPrice: "",
     stockQuantity: "",
     language: "ENGLISH",
