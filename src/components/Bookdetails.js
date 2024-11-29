@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FaTrashAlt,  } from 'react-icons/fa'; // Import trash and edit icons
+import { FaTrashAlt,  } from 'react-icons/fa'; 
 import { MdModeEdit } from "react-icons/md";
 
 function Bookdetails() {
   const [books, setBooks] = useState([]);
 
-  // Fetch books from the API
+
   useEffect(() => {
-    axios.get('http://localhost:8081/getbooks') // Replace with your API endpoint
+    axios.get('http://localhost:8081/getbooks')
       .then(response => {
         setBooks(response.data);
       })
@@ -19,9 +19,9 @@ function Bookdetails() {
 
   
 
-  // Handle delete button click
+
   const handleDeleteClick = (bookId) => {
-    // Make DELETE request with the bookId
+   
     axios.delete(`http://localhost:8081/deletebooks/${bookId}`)
       .then(response => {
         console.log(response.data); // Log the response message
