@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Form from './components/Form';
+import Bookdetails from './components/Bookdetails';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="min-h-screen bg-gray-100 text-gray-900 flex flex-col md:flex-row">
+      {/* Form Section */}
+      <div className="w-full md:w-1/2 p-4 bg-white ">
+        <Form />
+      </div>
+
+      {/* Bookdetails Section */}
+      <div className="w-full md:w-1/2 p-4 bg-white shadow-md">
+        <Bookdetails />
+      </div>
     </div>
   );
 }
