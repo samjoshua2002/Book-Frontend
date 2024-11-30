@@ -4,7 +4,7 @@ import { FaTrashAlt,  } from 'react-icons/fa';
 import { MdModeEdit } from "react-icons/md";
 
 function Bookdetails() {
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] =  useState([]);
 
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function Bookdetails() {
   return (
     <div className="p-4">
       <h1 className="text-3xl font-bold text-center mb-11 sticky top-0 bg-white  z-10">
-        Book Collection
+        Book Collections
       </h1>
 
       {/* Scrollable content area */}

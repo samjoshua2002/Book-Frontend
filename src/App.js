@@ -4,7 +4,8 @@ import Bookdetails from './components/Bookdetails';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-gray-100
+     text-gray-900 flex flex-col md:flex-row">
       
       <div className="w-full md:w-1/2 p-4 bg-white ">
         <Form />

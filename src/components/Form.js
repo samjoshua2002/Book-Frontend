@@ -8,12 +8,14 @@ function Form() {
     isbn: "",
     genre: "FICTION",
     publisher: "",
+
     publicationDate: "",
     price: "",
 
     
     costPrice: "",
     stockQuantity: "",
+    
     language: "ENGLISH",
     edition: "",
     pageCount: "",
