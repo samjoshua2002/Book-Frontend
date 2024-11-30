@@ -39,7 +39,7 @@ function Bookdetails() {
         Book Collections
       </h1>
 
-      {/* Scrollable content area */}
+      
       <div className="space-y-6 max-h-[80vh] overflow-y-auto">
         {books.map(book => (
           <div
