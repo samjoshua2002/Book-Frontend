@@ -8,20 +8,17 @@ function Form() {
     isbn: "",
     genre: "FICTION",
     publisher: "",
-
     publicationDate: "",
     price: "",
-
-    
     costPrice: "",
     stockQuantity: "",
-    
     language: "ENGLISH",
     edition: "",
     pageCount: "",
     bookFormat: "HARDCOVER",
     description: "",
     bookCoverImage: "",
+    recipient: "",
   });
 
   const handleChange = (e) => {
@@ -34,6 +31,7 @@ function Form() {
     console.log("Form Submitted: ", formData);
 
     try {
+      
       const response = await axios.post(
         "http://localhost:8081/addbooks",
         formData
@@ -41,10 +39,45 @@ function Form() {
 
       if (response.status === 200) {
         alert("Book added successfully!");
+
+        
+        const mailData = {
+          recipient: formData.recipient,
+          subject: `New Book added now: ${formData.title}`, 
+          body:  `
+         New Book Info:
+    
+    Title: ${formData.title}
+    Author: ${formData.author}
+    ISBN: ${formData.isbn}
+    Genre: ${formData.genre}
+    Publisher: ${formData.publisher}
+    Publication Date: ${formData.publicationDate}
+    Price: $${formData.price}
+    Stock Quantity: ${formData.stockQuantity}
+    Language: ${formData.language}
+    Edition: ${formData.edition}
+    Page Count: ${formData.pageCount}
+    Book Format: ${formData.bookFormat}
+    Description: ${formData.description}
+
+    For more details, visit: ${formData.isbn}
+        `
+        };
+
+        
+        const emailResponse = await axios.post(
+          "http://localhost:8081/email/send",
+          mailData
+        );
+
+        if (emailResponse.status === 200) {
+          alert("Email sent successfully!");
+        }
       }
     } catch (error) {
-      console.error("There was an error adding the book:", error);
-      alert("Failed to add book");
+      console.error("There was an error:", error);
+      alert("Failed to add book or send email.");
     }
   };
 
@@ -65,21 +98,21 @@ function Form() {
       bookFormat: "HARDCOVER",
       description: "",
       bookCoverImage: "",
+      recipient: "",
     });
   };
 
   return (
-    <div className="flex justify-center items-center  bg-white">
+    <div className="flex justify-center items-center bg-white">
       <div className="w-full bg-white p-5 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-900 sticky top-0 bg-white z-10">
           Book Management
         </h2>
         <form onSubmit={handleSubmit} className="space-y-5 overflow-y-auto max-h-[80vh]">
           
+          {/* Title */}
           <div>
-            <label className="block text-sm  font-medium text-gray-800">
-              Title
-            </label>
+            <label className="block text-sm font-medium text-gray-800">Title</label>
             <input
               type="text"
               id="title"
@@ -94,9 +127,7 @@ function Form() {
 
           {/* Author */}
           <div>
-            <label className="block mb-1 text-sm font-medium text-gray-800">
-              Author
-            </label>
+            <label className="block mb-1 text-sm font-medium text-gray-800">Author</label>
             <input
               type="text"
               id="author"
@@ -109,11 +140,24 @@ function Form() {
             />
           </div>
 
+          {/* Recipient */}
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-800">Recipient Email</label>
+            <input
+              type="email"
+              id="recipient"
+              name="recipient"
+              value={formData.recipient}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-400 rounded bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter recipient's email"
+              required
+            />
+          </div>
+
           {/* ISBN */}
           <div>
-            <label htmlFor="isbn" className="block mb-1 text-sm font-medium text-gray-800">
-              ISBN
-            </label>
+            <label htmlFor="isbn" className="block mb-1 text-sm font-medium text-gray-800">ISBN</label>
             <input
               type="text"
               id="isbn"
@@ -128,9 +172,7 @@ function Form() {
 
           {/* Genre (Dropdown) */}
           <div>
-            <label htmlFor="genre" className="block mb-1 text-sm font-medium text-gray-800">
-              Genre
-            </label>
+            <label htmlFor="genre" className="block mb-1 text-sm font-medium text-gray-800">Genre</label>
             <select
               id="genre"
               name="genre"
@@ -138,7 +180,7 @@ function Form() {
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-400 rounded bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
-              <option value="FICTION">Fiction</option>
+               <option value="FICTION">Fiction</option>
               <option value="NON_FICTION">Non-Fiction</option>
               <option value="MYSTERY">Mystery</option>
               <option value="FANTASY">Fantasy</option>
@@ -153,9 +195,7 @@ function Form() {
 
           {/* Publisher */}
           <div>
-            <label htmlFor="publisher" className="block mb-1 text-sm font-medium text-gray-800">
-              Publisher
-            </label>
+            <label htmlFor="publisher" className="block mb-1 text-sm font-medium text-gray-800">Publisher</label>
             <input
               type="text"
               id="publisher"
@@ -169,9 +209,7 @@ function Form() {
 
           {/* Publication Date */}
           <div>
-            <label htmlFor="publicationDate" className="block mb-1 text-sm font-medium text-gray-800">
-              Publication Date
-            </label>
+            <label htmlFor="publicationDate" className="block mb-1 text-sm font-medium text-gray-800">Publication Date</label>
             <input
               type="date"
               id="publicationDate"
@@ -186,9 +224,7 @@ function Form() {
           {/* Price and Stock Quantity */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="price" className="block mb-1 text-sm font-medium text-gray-800">
-                Price
-              </label>
+              <label htmlFor="price" className="block mb-1 text-sm font-medium text-gray-800">Price</label>
               <input
                 type="number"
                 id="price"
@@ -202,9 +238,7 @@ function Form() {
             </div>
 
             <div>
-              <label htmlFor="stockQuantity" className="block mb-1 text-sm font-medium text-gray-800">
-                Stock Quantity
-              </label>
+              <label htmlFor="stockQuantity" className="block mb-1 text-sm font-medium text-gray-800">Stock Quantity</label>
               <input
                 type="number"
                 id="stockQuantity"
@@ -221,9 +255,7 @@ function Form() {
           {/* Language and Edition */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="language" className="block mb-1 text-sm font-medium text-gray-800">
-                Language
-              </label>
+              <label htmlFor="language" className="block mb-1 text-sm font-medium text-gray-800">Language</label>
               <select
                 id="language"
                 name="language"
@@ -231,7 +263,7 @@ function Form() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-400 rounded bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
-                <option value="ENGLISH">English</option>
+                 <option value="ENGLISH">English</option>
                 <option value="SPANISH">Spanish</option>
                 <option value="FRENCH">French</option>
                 <option value="GERMAN">German</option>
@@ -245,9 +277,7 @@ function Form() {
             </div>
 
             <div>
-              <label htmlFor="edition" className="block mb-1 text-sm font-medium text-gray-800">
-                Edition
-              </label>
+              <label htmlFor="edition" className="block mb-1 text-sm font-medium text-gray-800">Edition</label>
               <input
                 type="text"
                 id="edition"
@@ -263,9 +293,7 @@ function Form() {
           {/* Page Count and Format */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="pageCount" className="block mb-1 text-sm font-medium text-gray-800">
-                Page Count
-              </label>
+              <label htmlFor="pageCount" className="block mb-1 text-sm font-medium text-gray-800">Page Count</label>
               <input
                 type="number"
                 id="pageCount"
@@ -278,9 +306,7 @@ function Form() {
             </div>
 
             <div>
-              <label htmlFor="bookFormat" className="block mb-1 text-sm font-medium text-gray-800">
-                Book Format
-              </label>
+              <label htmlFor="bookFormat" className="block mb-1 text-sm font-medium text-gray-800">Book Format</label>
               <select
                 id="bookFormat"
                 name="bookFormat"
@@ -290,15 +316,14 @@ function Form() {
               >
                 <option value="HARDCOVER">Hardcover</option>
                 <option value="PAPERBACK">Paperback</option>
+                <option value="EBOOK">Ebook</option>
               </select>
             </div>
           </div>
 
           {/* Description */}
           <div>
-            <label htmlFor="description" className="block mb-1 text-sm font-medium text-gray-800">
-              Description
-            </label>
+            <label htmlFor="description" className="block mb-1 text-sm font-medium text-gray-800">Description</label>
             <textarea
               id="description"
               name="description"
@@ -306,14 +331,13 @@ function Form() {
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-400 rounded bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter book description"
+              rows="4"
             />
           </div>
 
           {/* Book Cover Image */}
           <div>
-            <label htmlFor="bookCoverImage" className="block mb-1 text-sm font-medium text-gray-800">
-              Book Cover Image URL
-            </label>
+            <label htmlFor="bookCoverImage" className="block mb-1 text-sm font-medium text-gray-800">Book Cover Image</label>
             <input
               type="text"
               id="bookCoverImage"
@@ -321,24 +345,23 @@ function Form() {
               value={formData.bookCoverImage}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-400 rounded bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter book cover image URL"
+              placeholder="Enter image URL"
             />
           </div>
 
-          {/* Buttons */}
-          <div className="flex justify-between mt-5">
+          <div className="flex justify-center gap-5 mt-6">
             <button
               type="submit"
-              className="w-1/3 bg-black text-white py-2 rounded hover:bg-gray-800 focus:outline-none"
+              className="px-6 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition duration-300"
             >
-              Add Book
+              Submit
             </button>
             <button
               type="button"
               onClick={clearForm}
-              className="w-1/3 bg-gray-300 text-black py-2 rounded hover:bg-gray-400 focus:outline-none"
+              className="px-6 py-2 bg-red-500 text-white font-medium rounded-md hover:bg-red-600 transition duration-300"
             >
-              Clear Form
+              Clear
             </button>
           </div>
         </form>
